@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class Course {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", columnDefinition = "NVARCHAR(255)")
+    @Column(name = "description", columnDefinition = "VARCHAR(255)")  // Sửa NVARCHAR thành VARCHAR
     private String description;
 
     @Column(name = "start_time", nullable = false)
@@ -34,18 +35,17 @@ public class Course {
     private LocalDateTime endTime;
 
     @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    private BigInteger price;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private Set<Registration> registrations = new HashSet<>();
 
-    // Phương thức kiểm tra khóa học đã bắt đầu chưa
-    public boolean hasStarted() {
-        return LocalDateTime.now().isAfter(startTime);
-    }
-
-    // Phương thức kiểm tra khóa học đã kết thúc chưa
-    public boolean isCompleted() {
-        return LocalDateTime.now().isAfter(endTime);
+    public Course(long l, String javaProgramming, String learnJavaBasics, LocalDateTime localDateTime, LocalDateTime localDateTime1, BigInteger bigInteger) {
+        this.id = l;
+        this.name = javaProgramming;
+        this.description = learnJavaBasics;
+        this.startTime = localDateTime;
+        this.endTime = localDateTime1;
+        this.price = bigInteger;
     }
 }

@@ -22,17 +22,13 @@ public class Student {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "first_name", columnDefinition = "NVARCHAR(255)")
+    @Column(name = "first_name", columnDefinition = "VARCHAR(255)")
     private String firstName;
 
-    @Column(name = "last_name", columnDefinition = "NVARCHAR(255)")
+    @Column(name = "last_name", columnDefinition = "VARCHAR(255)")
     private String lastName;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private Set<Registration> registrations = new HashSet<>();
 
-    // Phương thức để lấy số lượng khóa học đã đăng ký
-    public int getNumberOfRegisteredCourses() {
-        return registrations.size();
-    }
 }
