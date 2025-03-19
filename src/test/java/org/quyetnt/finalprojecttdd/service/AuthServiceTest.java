@@ -81,7 +81,6 @@ public class AuthServiceTest {
                 .password("password123")
                 .build();
 
-        // Tạo mock UserDetails với quyền hợp lệ
         mockUserDetails = org.springframework.security.core.userdetails.User
                 .builder()
                 .username("testuser")
@@ -93,17 +92,12 @@ public class AuthServiceTest {
 
     @Test
     void registerUser_WithValidData_ShouldReturnSuccess() {
-        // Giả lập rằng username và email chưa tồn tại
         when(userRepository.existsByUsername(validSignupRequest.getUsername())).thenReturn(false);
         when(userRepository.existsByEmail(validSignupRequest.getEmail())).thenReturn(false);
-        // Giả lập mã hóa mật khẩu
         when(passwordEncoder.encode(validSignupRequest.getPassword())).thenReturn("encodedPassword");
-        // Giả lập tìm kiếm role
         when(roleRepository.findByName(ERole.ROLE_USER)).thenReturn(Optional.of(userRole));
-        // Giả lập lưu user
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // Khi gọi hàm registerUser thì mong đợi kết quả là true
         boolean result = authService.registerUser(validSignupRequest);
         assertTrue(result);
         verify(userRepository).save(any(User.class));
@@ -111,7 +105,6 @@ public class AuthServiceTest {
 
     @Test
     void registerUser_WithExistingUsername_ShouldReturnFalse() {
-        // Giả lập username đã tồn tại
         when(userRepository.existsByUsername(validSignupRequest.getUsername())).thenReturn(true);
         boolean result = authService.registerUser(validSignupRequest);
         assertFalse(result);
@@ -120,7 +113,6 @@ public class AuthServiceTest {
 
     @Test
     void registerUser_WithExistingEmail_ShouldReturnFalse() {
-        // Giả lập email đã tồn tại
         when(userRepository.existsByEmail(validSignupRequest.getEmail())).thenReturn(true);
 
         boolean result = authService.registerUser(validSignupRequest);
@@ -130,25 +122,14 @@ public class AuthServiceTest {
 
     @Test
     void registerUser_WithRoleAdmin_ShouldReturnSuccess() {
-        // Giả lập rằng username và email chưa tồn tại
         when(userRepository.existsByUsername(validSignupRequest.getUsername())).thenReturn(false);
         when(userRepository.existsByEmail(validSignupRequest.getEmail())).thenReturn(false);
-
-        // Giả lập mã hóa mật khẩu
         when(passwordEncoder.encode(validSignupRequest.getPassword())).thenReturn("encodedPassword");
-
-        // Giả lập tìm kiếm role admin
         Role adminRole = new Role(ERole.ROLE_ADMIN);
         adminRole.setId(2L);
         when(roleRepository.findByName(ERole.ROLE_ADMIN)).thenReturn(Optional.of(adminRole));
-
-        // Cập nhật roles trong request
         validSignupRequest.setRoles(Set.of("admin"));
-
-        // Giả lập lưu user
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        // Khi gọi hàm registerUser thì mong đợi kết quả là true
         boolean result = authService.registerUser(validSignupRequest);
         assertTrue(result);
         verify(userRepository).save(any(User.class));
@@ -156,11 +137,8 @@ public class AuthServiceTest {
 
     @Test
     void signin_WithInvalidCredentials_ShouldThrowException() {
-        // Giả lập quá trình xác thực thất bại (đăng nhập với thông tin sai)
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenThrow(new RuntimeException("Invalid credentials"));
-
-        // Gọi phương thức signin và kiểm tra lỗi
         try {
             authService.login(validLoginRequest);
         } catch (RuntimeException ex) {

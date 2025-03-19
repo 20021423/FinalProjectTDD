@@ -8,9 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
-    // Tìm tất cả các khóa học chưa bắt đầu
     List<Course> findByStartTimeAfter(LocalDateTime now);
 
-    // Tìm tất cả các khóa học chưa kết thúc
     List<Course> findByEndTimeAfter(LocalDateTime now);
 }

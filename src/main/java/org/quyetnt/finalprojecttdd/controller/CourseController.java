@@ -18,10 +18,6 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    /**
-     * API lấy tất cả các khóa học chưa kết thúc
-     * @return ResponseEntity chứa danh sách khóa học chưa kết thúc
-     */
     @GetMapping("/uncompleted")
     public ResponseEntity<ResponseObject<List<CourseDTO>>> getAllUncompletedCourses() {
         List<Course> courses = courseService.findAllUncompletedCourses();
@@ -36,10 +32,6 @@ public class CourseController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * API lấy tất cả các khóa học chưa bắt đầu
-     * @return ResponseEntity chứa danh sách khóa học chưa bắt đầu
-     */
     @GetMapping("/not-started")
     public ResponseEntity<ResponseObject<List<CourseDTO>>> getAllCoursesNotStarted() {
         List<Course> courses = courseService.findCoursesNotStartedYet();
@@ -54,11 +46,6 @@ public class CourseController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * API lấy thông tin khóa học theo ID
-     * @param id ID của khóa học
-     * @return ResponseEntity chứa thông tin khóa học
-     */
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject<CourseDTO>> getCourseById(@PathVariable Long id) {
         try {

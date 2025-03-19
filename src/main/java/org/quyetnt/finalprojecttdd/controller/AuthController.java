@@ -40,14 +40,11 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         try {
-            // Gọi AuthService để đăng nhập và lấy thông tin người dùng cùng token
             JwtResponse jwtResponse = authService.login(loginRequest);
 
-            // Trả về response với JwtResponse
             ResponseObject<JwtResponse> response = new ResponseObject<>("success", "User authenticated successfully!", jwtResponse);
             return ResponseEntity.ok(response);
         } catch (BadCredentialsException ex) {
-            // Nếu thông tin đăng nhập sai
             ResponseObject<?> response = new ResponseObject<>("error", "Invalid credentials", null);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }

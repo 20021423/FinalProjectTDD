@@ -52,13 +52,8 @@ public class CourseServiceTest {
 
     @Test
     void findCourseById_WithValidId_ShouldReturnCourse() {
-        // Given
         when(courseRepository.findById(1L)).thenReturn(Optional.of(course1));
-
-        // When
         Course result = courseService.findCourseById(1L);
-
-        // Then
         assertNotNull(result);
         assertEquals(1L, result.getId());
         assertEquals("Java Programming", result.getName());
@@ -66,23 +61,17 @@ public class CourseServiceTest {
 
     @Test
     void findCourseById_WithInvalidId_ShouldThrowException() {
-        // Given
         when(courseRepository.findById(99L)).thenReturn(Optional.empty());
-
-        // When & Then
         assertThrows(RuntimeException.class, () -> courseService.findCourseById(99L));
     }
 
     @Test
     void findAllUncompletedCourses_ShouldReturnUncompletedCourses() {
-        // Given
         when(courseRepository.findByEndTimeAfter(any(LocalDateTime.class)))
                 .thenReturn(Arrays.asList(course1, course2));
 
-        // When
         List<Course> result = courseService.findAllUncompletedCourses();
 
-        // Then
         assertEquals(2, result.size());
         assertTrue(result.contains(course1));
         assertTrue(result.contains(course2));
@@ -90,14 +79,11 @@ public class CourseServiceTest {
 
     @Test
     void findCoursesNotStartedYet_ShouldReturnCoursesNotStarted() {
-        // Given
         when(courseRepository.findByStartTimeAfter(any(LocalDateTime.class)))
                 .thenReturn(List.of(course1));
 
-        // When
         List<Course> result = courseService.findCoursesNotStartedYet();
 
-        // Then
         assertEquals(1, result.size());
         assertEquals(course1, result.get(0));
     }

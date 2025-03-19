@@ -25,7 +25,7 @@ public class Course {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", columnDefinition = "VARCHAR(255)")  // Sửa NVARCHAR thành VARCHAR
+    @Column(name = "description", columnDefinition = "VARCHAR(255)")
     private String description;
 
     @Column(name = "start_time", nullable = false)

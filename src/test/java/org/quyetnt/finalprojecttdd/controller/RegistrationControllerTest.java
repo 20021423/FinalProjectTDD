@@ -49,14 +49,12 @@ public class RegistrationControllerTest {
 
     @Test
     void registerCourse_WithValidData_ShouldReturnSuccessResponse() throws Exception {
-        // Given
         CourseRegistrationRequest request = new CourseRegistrationRequest(1L, "test@example.com");
         List<CourseDTO> courseDTOList = new ArrayList<>();
         ResponseObject<List<CourseDTO>> response = new ResponseObject<>("success", "Đăng ký khóa học thành công", courseDTOList);
 
         when(registrationService.registerCourse(anyString(), anyLong())).thenReturn(response);
 
-        // When & Then
         mockMvc.perform(post("/api/courses/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -67,13 +65,11 @@ public class RegistrationControllerTest {
 
     @Test
     void registerCourse_WithInvalidData_ShouldReturnErrorResponse() throws Exception {
-        // Given
         CourseRegistrationRequest request = new CourseRegistrationRequest(99L, "test@example.com");
         ResponseObject<List<CourseDTO>> response = new ResponseObject<>("error", "Không tìm thấy khóa học với ID đã cung cấp", null);
 
         when(registrationService.registerCourse(anyString(), anyLong())).thenReturn(response);
 
-        // When & Then
         mockMvc.perform(post("/api/courses/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -84,12 +80,10 @@ public class RegistrationControllerTest {
 
     @Test
     void unregisterCourse_WithValidData_ShouldReturnSuccessResponse() throws Exception {
-        // Given
         ResponseObject<?> response = new ResponseObject<>("success", "Hủy đăng ký khóa học thành công", null);
 
         when(registrationService.unregisterCourse(anyLong(), anyString())).thenReturn((ResponseObject<String>) response);
 
-        // When & Then
         mockMvc.perform(delete("/api/courses/unregister/1/test@example.com"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("success"))
@@ -98,12 +92,10 @@ public class RegistrationControllerTest {
 
     @Test
     void unregisterCourse_WithInvalidData_ShouldReturnErrorResponse() throws Exception {
-        // Given
         ResponseObject<?> response = new ResponseObject<>("error", "Học viên chưa đăng ký khóa học này", null);
 
         when(registrationService.unregisterCourse(anyLong(), anyString())).thenReturn((ResponseObject<String>) response);
 
-        // When & Then
         mockMvc.perform(delete("/api/courses/unregister/1/test@example.com"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("error"))

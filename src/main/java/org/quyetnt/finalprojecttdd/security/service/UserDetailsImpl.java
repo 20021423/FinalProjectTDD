@@ -17,7 +17,7 @@ public class UserDetailsImpl implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    // Constructor
+
     public UserDetailsImpl(Long id, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
@@ -26,7 +26,6 @@ public class UserDetailsImpl implements UserDetails {
         this.authorities = authorities;
     }
 
-    // Phương thức static để tạo đối tượng UserDetailsImpl từ đối tượng User
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
@@ -65,21 +64,21 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // Có thể thêm logic khác nếu cần
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // Có thể thêm logic khác nếu cần
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // Có thể thêm logic khác nếu cần
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // Có thể thêm logic khác nếu cần
+        return true;
     }
 }

@@ -44,7 +44,6 @@ public class CourseControllerTest {
 
     @Test
     public void getAllUncompletedCourses_WithValidData_ShouldReturnSuccessResponse() throws Exception {
-        // Arrange
         List<Course> mockCourses = new ArrayList<>();
         mockCourses.add(new Course());
         mockCourses.add(new Course());
@@ -64,7 +63,6 @@ public class CourseControllerTest {
         when(courseService.findAllUncompletedCourses()).thenReturn(mockCourses);
         when(courseService.convertToDTOList(mockCourses)).thenReturn(mockCourseDTOs);
 
-        // Act & Assert
         mockMvc.perform(get("/api/courses/uncompleted")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -77,14 +75,12 @@ public class CourseControllerTest {
                 .andExpect(jsonPath("$.data[1].id", is(2)))
                 .andExpect(jsonPath("$.data[1].name", is("Spring Boot")));
 
-        // Verify
         verify(courseService, times(1)).findAllUncompletedCourses();
         verify(courseService, times(1)).convertToDTOList(mockCourses);
     }
 
     @Test
     public void getAllCoursesNotStarted_WithValidData_ShouldReturnSuccessResponse() throws Exception {
-        // Arrange
         List<Course> mockCourses = new ArrayList<>();
         mockCourses.add(new Course());
 
@@ -97,7 +93,6 @@ public class CourseControllerTest {
         when(courseService.findCoursesNotStartedYet()).thenReturn(mockCourses);
         when(courseService.convertToDTOList(mockCourses)).thenReturn(mockCourseDTOs);
 
-        // Act & Assert
         mockMvc.perform(get("/api/courses/not-started")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -108,14 +103,12 @@ public class CourseControllerTest {
                 .andExpect(jsonPath("$.data[0].id", is(3)))
                 .andExpect(jsonPath("$.data[0].name", is("Python Basics")));
 
-        // Verify
         verify(courseService, times(1)).findCoursesNotStartedYet();
         verify(courseService, times(1)).convertToDTOList(mockCourses);
     }
 
     @Test
     public void getCourseById_WithExistingId_ShouldReturnSuccessResponse() throws Exception {
-        // Arrange
         Long courseId = 1L;
         Course mockCourse = new Course();
 
@@ -127,7 +120,6 @@ public class CourseControllerTest {
         when(courseService.findCourseById(courseId)).thenReturn(mockCourse);
         when(courseService.convertToDTO(mockCourse)).thenReturn(mockCourseDTO);
 
-        // Act & Assert
         mockMvc.perform(get("/api/courses/{id}", courseId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -138,20 +130,17 @@ public class CourseControllerTest {
                 .andExpect(jsonPath("$.data.name", is("Java Programming")))
                 .andExpect(jsonPath("$.data.description", is("Learn Java from scratch")));
 
-        // Verify
         verify(courseService, times(1)).findCourseById(courseId);
         verify(courseService, times(1)).convertToDTO(mockCourse);
     }
 
     @Test
     public void getCourseById_WithNonExistingId_ShouldReturnErrorResponse() throws Exception {
-        // Arrange
         Long courseId = 999L;
         String errorMessage = "Không tìm thấy khóa học với ID: " + courseId;
 
         when(courseService.findCourseById(courseId)).thenThrow(new RuntimeException(errorMessage));
 
-        // Act & Assert
         mockMvc.perform(get("/api/courses/{id}", courseId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()) // Note: Trong controller vẫn trả về status code 200 dù có lỗi
@@ -160,7 +149,6 @@ public class CourseControllerTest {
                 .andExpect(jsonPath("$.message", is(errorMessage)))
                 .andExpect(jsonPath("$.data").doesNotExist());
 
-        // Verify
         verify(courseService, times(1)).findCourseById(courseId);
         verify(courseService, never()).convertToDTO(any(Course.class));
     }

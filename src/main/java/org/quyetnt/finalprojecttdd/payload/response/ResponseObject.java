@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseObject<T> {
-    private String status;    // Ví dụ: "success" hoặc "error"
+    private String status;
     private String message;
-    private T data;           // Nếu không có dữ liệu, data sẽ là null
+    private T data;
 }

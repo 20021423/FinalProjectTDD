@@ -20,23 +20,12 @@ public class RegistrationController {
     @Autowired
     private RegistrationService registrationService;
 
-    /**
-     * API đăng ký khóa học cho học viên
-     * @param request Thông tin đăng ký (email và courseId)
-     * @return ResponseEntity chứa thông tin đăng ký và danh sách khóa học chưa hoàn thành
-     */
     @PostMapping("/register")
     public ResponseEntity<ResponseObject<List<CourseDTO>>> registerCourse(@RequestBody CourseRegistrationRequest request) {
         ResponseObject<List<CourseDTO>> response = registrationService.registerCourse(request.getEmail(), request.getCourseId());
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * API hủy đăng ký khóa học
-     * @param courseId ID của khóa học
-     * @param email Email của học viên
-     * @return ResponseEntity chứa thông tin hủy đăng ký
-     */
     @DeleteMapping("/unregister/{courseId}/{email}")
     public ResponseEntity<ResponseObject<?>> unregisterCourse(@PathVariable Long courseId, @PathVariable String email) {
         ResponseObject<?> response = registrationService.unregisterCourse(courseId, email);
